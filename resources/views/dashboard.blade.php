@@ -21,7 +21,7 @@
             </div>
             
             <div class="bg-white rounded-lg p-6 mb-4 flex flex-col items-center">
-                <h3 class="text-xl font-semibold mb-4">My Posts</h3>
+                <h3 class="text-xl font-semibold mb-4">My Pets</h3>
                 @foreach(auth()->user()->posts->reverse() as $post)
                     <div class="bg-gray-100 rounded-lg p-4 mb-4 border-gray-900 border-2 flex items-center w-full">
                         <div>
@@ -33,7 +33,7 @@
                                 @else
                                     <div class="rounded-full h-8 w-8 bg-gray-300 mr-2"></div>
                                 @endif
-                                <h4 class="text-lg font-semibold">{{ $post->user->name }}</h4>
+                                <h4 class="text-lg font-semibold">{{ $post->dog_name }}</h4>
                                 <span class="text-gray-400 text-sm mx-2">{{ $post->created_at->diffForHumans(['short' => true]) }}</span>
                                 @if ($post->user->is(auth()->user()))
                                     <x-dropdown>
@@ -60,6 +60,12 @@
                                 @endif
                             </div>
                             <p class="text-gray-600">{{ $post->message }}</p>
+                            <p>&euro;{{ number_format($post->price, 2, ','  ,   '.') }}</p>
+                            <p class="mt-4 text-sm  text-gray-900">
+                                {{ \Carbon\Carbon::parse($post->start_date)->format('j F Y') }}
+                                &middot;
+                                {{ \Carbon\Carbon::parse($post->end_date)->format('j F Y') }}
+                            </p>
                         </div>
                     </div>
                 @endforeach

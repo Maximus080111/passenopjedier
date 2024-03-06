@@ -11,7 +11,11 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = [
+        'dog_name',
         'message',
+        'start_date',
+        'end_date',
+        'price',
     ];
 
     public function user(): BelongsTo

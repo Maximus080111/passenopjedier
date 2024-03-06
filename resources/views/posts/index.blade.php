@@ -3,12 +3,22 @@
         <form method="POST" action="{{ route('posts.store') }}">
             @csrf
             <textarea
-                name="message"
-                placeholder="{{ __('What\'s on your mind?') }}"
-                class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent dark:text-white"
+            name="dog_name"
+            placeholder="{{ __('What\'s dogs name?') }}"
+            class="block w-full border-gray-300 mb-4 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent dark:text-white"
+            >{{ old('dog_name') }}</textarea>
+            <textarea
+            name="message"
+            placeholder="{{ __('What\'s on your mind?') }}"
+            class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent dark:text-white"
             >{{ old('message') }}</textarea>
+            <div class="date-picker flex justify- justify-center space-x-2 my-4">
+                <input type="date" id="start-date" name="start_date" placeholder="Start Date" required class="border-gray-300 mx-2 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent dark:text-white">
+                <input type="date" id="end-date" name="end_date" placeholder="End Date" required class="border-gray-300 mx-2 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent dark:text-white">
+            </div>
+            <input type="number" step="0.01" name="price" placeholder="{{ __('Price') }}" required class="border-gray-300 mx-2 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent dark:text-white">
             <x-input-error :messages="$errors->get('message')" class="mt-2" />
-            <x-primary-button class="mt-4">{{ __('Post') }}</x-primary-button>
+            <x-primary-button class="mt-4 w-full py-4 flex items-center justify-center bg-blue-500">{{ __('Post') }}</x-primary-button>
         </form>
 
         <div class="mt-6">
@@ -51,7 +61,14 @@
                                     </x-dropdown>
                                 @endif --}}
                             </div>
+                            <p class="mt-4 text-lg text-gray-900">{{$post->dog_name}}</p>
                             <p class="mt-4 text-lg text-gray-900">{{ $post->message }}</p>
+                            <p>&euro;{{ number_format($post->price, 2, ',', '.') }}</p>
+                            <p class="mt-4 text-lg text-gray-900">
+                                {{ \Carbon\Carbon::parse($post->start_date)->format('j F Y') }}
+                                &middot;
+                                {{ \Carbon\Carbon::parse($post->end_date)->format('j F Y') }}
+                            </p>
                         </div>
                     </div>
                 </div>
