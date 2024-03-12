@@ -6,8 +6,8 @@
     </x-slot> --}}
     <div class="py-12 px-8">
         <div class="max-w-7xl mx-8 mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white rounded-lg p-6 mb-4 text-center flex items-center flex-col">
-                <h3 class="text-xl font-semibold mb-4">Your profile</h3>
+            <div class="bg-mossgreen rounded-lg p-6 mb-4 text-center flex items-center flex-col">
+                <h3 class="text-xl text-white font-semibold mb-4">Your profile</h3>
                 @if(auth()->user()->image)
                     <div class="rounded-full h-20 w-20 bg-gray-300 mb-4">
                         <img src="{{ auth()->user()->image }}" alt="User Image" class="rounded-full h-20 w-20 mb-4">
@@ -15,13 +15,13 @@
                 @else
                     <div class="rounded-full h-20 w-20 bg-gray-300 mb-4"></div>
                 @endif
-                <h3 class="text-xl font-semibold mb-2">{{ auth()->user()->name }}</h3>
-                <p class="text-gray-600 mb-4">{{ auth()->user()->email }}</p>
-                <a href="{{ route('profile.edit') }}" class="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4">Edit Profile</a>
+                <h3 class="text-xl text-white font-semibold mb-2">{{ auth()->user()->name }}</h3>
+                <p class="text-gray-200 mb-4">{{ auth()->user()->email }}</p>
+                <a href="{{ route('profile.edit') }}" class="bg-white text-mossgreen px-4 py-2 rounded-lg mt-4">Edit Profile</a>
             </div>
             
-            <div class="bg-white rounded-lg p-6 mb-4 flex flex-col items-center">
-                <h3 class="text-xl font-semibold mb-4">My Pets</h3>
+            <div class="bg-mossgreen rounded-lg p-6 mb-4 flex flex-col items-center">
+                <h3 class="text-xl font-semibold mb-4 text-white">My Pets</h3>
                 @foreach(auth()->user()->posts->reverse() as $post)
                     <div class="bg-gray-100 rounded-lg p-4 mb-4 border-gray-900 border-2 flex items-center w-full">
                         <div>
@@ -69,7 +69,7 @@
                         </div>
                     </div>
                 @endforeach
-                <a href="{{ route('posts.index') }}" class="bg-blue-500 text-white px-4 py-4 text-center rounded-lg w-full">Create post</a>
+                <a href="{{ route('posts.index') }}" class="bg-white text-mossgreen font-extrabold px-4 py-4 text-center rounded-lg w-full">Create post</a>
             </div>
         </div>
     </div>
