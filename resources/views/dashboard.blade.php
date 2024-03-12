@@ -4,7 +4,7 @@
             {{ __('Dashboard') }}
         </h2>
     </x-slot> --}}
-    <div class="py-12">
+    <div class="py-12 px-8">
         <div class="max-w-7xl mx-8 mx-auto sm:px-6 lg:px-8">
             <div class="bg-white rounded-lg p-6 mb-4 text-center flex items-center flex-col">
                 <h3 class="text-xl font-semibold mb-4">Your profile</h3>

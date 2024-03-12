@@ -28,6 +28,10 @@ Route::resource('posts', PostController::class)
     ->only(['index', 'store', 'edit', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
 
+Route::get('/admin', function () {
+    return view('admin', ['users' => App\Models\User::all()]);
+})->middleware(['auth', 'verified'])->name('admin');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

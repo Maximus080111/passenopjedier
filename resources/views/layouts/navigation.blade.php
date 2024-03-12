@@ -18,6 +18,11 @@
                     <x-nav-link :href="route('posts.index')" :active="request()->routeIs('posts.index')">
                         {{ __('Posts') }}
                     </x-nav-link>
+                    @if(Auth::user()->is_admin == 1)
+                        <x-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
+                            {{ __('Admin Dashboard') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
