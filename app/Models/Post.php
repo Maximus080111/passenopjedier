@@ -16,6 +16,7 @@ class Post extends Model
         'start_date',
         'end_date',
         'price',
+        'species',
     ];
 
     public function user(): BelongsTo

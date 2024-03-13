@@ -5,19 +5,24 @@
             <textarea
             name="dog_name"
             placeholder="{{ __('What\'s dogs name?') }}"
-            class="block w-full border-gray-300 mb-4 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent dark:text-white"
+            class="block w-full border-gray-300 mb-4 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent"
             >{{ old('dog_name') }}</textarea>
             <textarea
             name="message"
             placeholder="{{ __('What\'s on your mind?') }}"
-            class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent dark:text-white"
+            class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent"
             >{{ old('message') }}</textarea>
             <div class="date-picker flex justify- justify-center space-x-2 my-4">
-                <input type="date" id="start-date" name="start_date" placeholder="Start Date" required class="border-gray-300 mx-2 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent dark:text-white">
-                <input type="date" id="end-date" name="end_date" placeholder="End Date" required class="border-gray-300 mx-2 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent dark:text-white">
+                <input type="date" id="start-date" name="start_date" placeholder="Start Date" required class="border-gray-300 mx-2 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent">
+                <input type="date" id="end-date" name="end_date" placeholder="End Date" required class="border-gray-300 mx-2 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent">
             </div>
-            <input type="number" step="0.01" name="price" placeholder="{{ __('Price') }}" required class="border-gray-300 mx-2 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent dark:text-white">
+            <input type="number" step="0.01" name="price" placeholder="{{ __('Price') }}" required class="border-gray-300 mx-2 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent">
             <x-input-error :messages="$errors->get('message')" class="mt-2" />
+            <select name=species id="species">
+                @foreach ($species as $kind)
+                    <option value="{{ $kind->animal_species }}">{{ $kind->animal_species }}</option>
+                @endforeach
+            </select>
             <x-primary-button class="mt-4 w-full py-4 flex items-center justify-center bg-blue-500">{{ __('Post') }}</x-primary-button>
         </form>
 
@@ -63,6 +68,7 @@
                             </div>
                             <p class="mt-4 text-lg text-gray-900">{{$post->dog_name}}</p>
                             <p class="mt-4 text-lg text-gray-900">{{ $post->message }}</p>
+                            <p class="mt-4 text-lg text-gray-900">{{$post->species}}</p>
                             <p>&euro;{{ number_format($post->price, 2, ',', '.') }}</p>
                             <p class="mt-4 text-lg text-gray-900">
                                 {{ \Carbon\Carbon::parse($post->start_date)->format('j F Y') }}

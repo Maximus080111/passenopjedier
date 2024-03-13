@@ -19,7 +19,7 @@
                         {{ __('Posts') }}
                     </x-nav-link>
                     @if(Auth::user()->is_admin == 1)
-                        <x-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
+                        <x-nav-link :href="route('admin.index')" :active="request()->routeIs('admin.index')">
                             {{ __('Admin Dashboard') }}
                         </x-nav-link>
                     @endif

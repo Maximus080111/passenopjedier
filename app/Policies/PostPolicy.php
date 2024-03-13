@@ -45,6 +45,7 @@ class PostPolicy
      */
     public function delete(User $user, Post $post): bool
     {
+        if($user->is_admin == 1) return true;
         return $this->update($user, $post);
     }
 

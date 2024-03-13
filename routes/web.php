@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,9 +29,17 @@ Route::resource('posts', PostController::class)
     ->only(['index', 'store', 'edit', 'update', 'destroy'])
     ->middleware(['auth', 'verified']);
 
-Route::get('/admin', function () {
-    return view('admin', ['users' => App\Models\User::all()]);
-})->middleware(['auth', 'verified'])->name('admin');
+// Route::get('/admin', function () {
+//     if (auth()->user()->is_admin) {
+//         return view('admin', ['users' => App\Models\User::all(), 'posts' => App\Models\Post::all()]);
+//     } else {
+//         abort(403, 'Unauthorized');
+//     }
+// })->middleware(['auth', 'verified'])->name('admin');
+
+Route::resource('admin', UserController::class)
+    ->only(['edit', 'update', 'index'])
+    ->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

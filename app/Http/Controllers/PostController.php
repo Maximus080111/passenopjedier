@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use App\Models\Post;
+use App\Models\Species;
 use Illuminate\Http\Response;
 use Illuminate\View\View; 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -15,8 +17,10 @@ class PostController extends Controller
      */
     public function index() : View
     {
+        $species = DB::table('species')->get();
         return view('posts.index', [
             'posts' => Post::with('user')->latest()->get(),
+            'species'=> Species::all(),
         ]);
     }
 
@@ -39,8 +43,9 @@ class PostController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'required|date',
             'price' => 'required|numeric|min:0',
+            'species' => 'required|string|max:20',
         ]);
- 
+
         $request->user()->posts()->create($validated);
  
         return redirect(route('posts.index'));
@@ -94,7 +99,11 @@ class PostController extends Controller
         $this->authorize('delete', $post);
  
         $post->delete();
- 
-        return redirect(route('posts.index'));
+        
+        if(auth()->user()->is_admin == 1){
+            return redirect(route('admin'));
+        } else {
+            return redirect(route('posts.index'));
+        }
     }
 }

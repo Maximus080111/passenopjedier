@@ -61,6 +61,7 @@
                             </div>
                             <p class="text-gray-600">{{ $post->message }}</p>
                             <p>&euro;{{ number_format($post->price, 2, ','  ,   '.') }}</p>
+                            <p>{{ $post->species }}</p>
                             <p class="mt-4 text-sm  text-gray-900">
                                 {{ \Carbon\Carbon::parse($post->start_date)->format('j F Y') }}
                                 &middot;

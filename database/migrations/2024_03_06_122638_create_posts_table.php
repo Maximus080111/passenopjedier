@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->decimal('price', 4, 2); // Adjust precision as needed
+            $table->string('species');
             $table->timestamps();
         });
     }
