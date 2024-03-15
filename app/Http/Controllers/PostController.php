@@ -100,8 +100,8 @@ class PostController extends Controller
  
         $post->delete();
         
-        if(auth()->user()->is_admin == 1){
-            return redirect(route('admin'));
+        if(auth()->user()->is_admin){
+            return redirect(route('admin.index'));
         } else {
             return redirect(route('posts.index'));
         }

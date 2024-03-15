@@ -16,8 +16,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function edit(User $user) {
-        if(user->is_blocked == 1) {
+    public function block(User $user) {
+        if($user->is_blocked == 1) {
             $user->is_blocked = 0;
         } else {
             $user->is_blocked = 1;
@@ -26,5 +26,13 @@ class UserController extends Controller
         return redirect(route('admin.index'));
     }
 
-    
+    public function admin(User $user) {
+        if($user->is_admin == 1) {
+            $user->is_admin = 0;
+        } else {
+            $user->is_admin = 1;
+        }
+        $user->save();
+        return redirect(route('admin.index'));
+    }
 }

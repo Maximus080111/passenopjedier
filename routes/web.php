@@ -37,9 +37,15 @@ Route::resource('posts', PostController::class)
 //     }
 // })->middleware(['auth', 'verified'])->name('admin');
 
-Route::resource('admin', UserController::class)
-    ->only(['edit', 'update', 'index'])
-    ->middleware(['auth', 'verified']);
+// Route::resource('admin', UserController::class)
+//     ->only(['edit', 'update', 'index'])
+//     ->middleware(['auth', 'verified']);
+
+Route::middleware('auth')->group(function () {
+    Route::get('/admin', [UserController::class, 'index'])->name('admin.index');
+    Route::get('/admin/{user}/block', [UserController::class, 'block'])->name('admin.block');
+    Route::get('/admin/{user}/admin', [UserController::class, 'admin'])->name('admin.admin');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
