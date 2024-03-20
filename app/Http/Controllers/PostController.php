@@ -27,12 +27,11 @@ class PostController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create() : View
     {
-        //
+        return view('posts.create', [
+            'species' => Species::all(),
+        ]);
     }
 
     /**

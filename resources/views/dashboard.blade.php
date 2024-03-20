@@ -73,7 +73,7 @@
                         </div>
                     </div>
                 @endforeach
-                <a href="{{ route('posts.index') }}" class="bg-white text-mossgreen font-extrabold px-4 py-4 text-center rounded-lg w-full">Create post</a>
+                <a href="{{ route('posts.create') }}" class="bg-white text-mossgreen font-extrabold px-4 py-4 text-center rounded-lg w-full">Create post</a>
             </div>
         </div>
     </div>
