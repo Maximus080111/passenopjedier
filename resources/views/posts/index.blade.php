@@ -1,9 +1,9 @@
 <x-app-layout>
     <div class="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8 flex flex-col">
         <a href="{{ route('posts.create') }}" class="bg-mossgreen text-white my-4 font-extrabold px-4 py-4 text-center rounded-lg min-w-full">Create post</a>
-        <div class="mt-3 flex gap-4 flex-wrap justify-around">
+        <div class="mt-3 flex flex-col sm:flex-row gap-4 flex-wrap justify-around">
             @foreach ($posts as $post)
-                <div class="bg-white shadow-sm rounded-lg border-mossgreen h-80 w-2/5 border-4 mb-4 relative">
+                <div class="bg-white shadow-sm rounded-lg border-mossgreen h-80 w-full sm:w-2/5 border-4 mb-4 relative">
                     <p class="absolute top-4 right-4 bg-white rounded-full h-20 w-20 flex items-center justify-center text-mossgreen font-extrabold text-xl">&euro;{{ number_format($post->price, 2, ',', '.') }}</p>
                     @unless($post->image == null)
                         <img src="{{ asset('storage/images/' . $post->image) }}" alt="Dog" class="rounded-sm h-full w-full  object-cover object-center">
