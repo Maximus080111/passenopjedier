@@ -9,22 +9,24 @@
                     <div class="card-body">  
                         <h5 class="card-title text-xl font-bold">{{ $user->name }} </h5>
                         <p class="card-text text-gray-600">{{ $user->email }}</p>
-                        <div class="mt-4 flex">
-                            <div class="bg-mossgreen mx-4 px-4 py-2 text-white rounded-md">
-                                @if($user->is_blocked)
-                                    <a href="/admin/{{$user->id}}/block">unblock user</a>
-                                @else
-                                    <a href="/admin/{{$user->id}}/block">block user</a>
-                                @endif
+                        @unless(Auth()->user()->id == $user->id)
+                            <div class="mt-4 flex">
+                                <div class="bg-mossgreen mx-4 px-4 py-2 text-white rounded-md">
+                                    @if($user->is_blocked)
+                                        <a href="/admin/{{$user->id}}/block">unblock user</a>
+                                    @else
+                                        <a href="/admin/{{$user->id}}/block">block user</a>
+                                    @endif
+                                </div>
+                                <div class="bg-mossgreen mx-4 px-4 py-2 text-white rounded-md">
+                                    @if($user->is_admin)
+                                        <a href="/admin/{{$user->id}}/admin">remove admin</a>
+                                    @else
+                                        <a href="/admin/{{$user->id}}/admin">make admin</a>
+                                    @endif
+                                </div>
                             </div>
-                            <div class="bg-mossgreen mx-4 px-4 py-2 text-white rounded-md">
-                                @if($user->is_admin)
-                                    <a href="/admin/{{$user->id}}/admin">remove admin</a>
-                                @else
-                                    <a href="/admin/{{$user->id}}/admin">make admin</a>
-                                @endif
-                            </div>
-                        </div>
+                        @endunless
                     </div>
                 </div>
             @endforeach
@@ -54,9 +56,9 @@
                                     </button>
                                 </x-slot>
                                 <x-slot name="content">
-                                    <x-dropdown-link :href="route('posts.edit', $post)">
+                                    {{-- <x-dropdown-link :href="route('posts.edit', $post)">
                                         {{ __('Edit') }}
-                                    </x-dropdown-link>
+                                    </x-dropdown-link> --}}
                                     <form method="POST" action="{{ route('posts.destroy', $post) }}">
                                         @csrf
                                         @method('delete')
@@ -70,6 +72,9 @@
                     <p class="text-gray-600">{{ $post->message }}</p>
                     <p>&euro;{{ number_format($post->price, 2, ','  ,   '.') }}</p>
                     <p>{{ $post->species }}</p>
+                    @unless($post->image == null)
+                        <img src="{{ asset('storage/images/' . $post->image) }}" alt="Dog" class="w-full h-64 object-cover mt-4">
+                    @endunless
                     <p class="mt-4 text-sm  text-gray-900">
                         {{ \Carbon\Carbon::parse($post->start_date)->format('j F Y') }}
                         &middot;

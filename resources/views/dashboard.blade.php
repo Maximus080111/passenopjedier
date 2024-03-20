@@ -62,6 +62,9 @@
                             <p class="text-gray-600">{{ $post->message }}</p>
                             <p>&euro;{{ number_format($post->price, 2, ','  ,   '.') }}</p>
                             <p>{{ $post->species }}</p>
+                            @unless($post->image == null)
+                                <img src="{{ asset('storage/images/' . $post->image) }}" alt="Dog" class="w-full h-64 object-cover mt-4">
+                            @endunless
                             <p class="mt-4 text-sm  text-gray-900">
                                 {{ \Carbon\Carbon::parse($post->start_date)->format('j F Y') }}
                                 &middot;

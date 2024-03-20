@@ -11,16 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('aanvraags', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('dog_name');
-            $table->string('message');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->decimal('price', 4, 2); // Adjust precision as needed
-            $table->string('species');
-            $table->string('image')->nullable();
+            $table->foreignId('post_id')->constrained()->cascadeOnDelete();
+            $table->boolean('accepted')->default(false);
             $table->timestamps();
         });
     }
@@ -30,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('aanvraags');
     }
 };

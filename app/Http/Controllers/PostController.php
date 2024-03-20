@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Post;
 use App\Models\Species;
 use Illuminate\Http\Response;
 use Illuminate\View\View; 
 use Illuminate\Http\Request;
+use App\Models\Aanvraag;
 use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
@@ -21,6 +23,7 @@ class PostController extends Controller
         return view('posts.index', [
             'posts' => Post::with('user')->latest()->get(),
             'species'=> Species::all(),
+            'aanvragen' => Aanvraag::All(),
         ]);
     }
 
@@ -35,8 +38,10 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
+        $name = null;
+
         $validated = $request->validate([
             'dog_name' => 'required|string|max:255',
             'message' => 'required|string|max:255',
@@ -44,9 +49,25 @@ class PostController extends Controller
             'end_date' => 'required|date',
             'price' => 'required|numeric|min:0',
             'species' => 'required|string|max:20',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $request->user()->posts()->create($validated);
+        if($request->hasFile('image')){
+            $image = $request->file('image');
+            $name = time().'.'.$image->extension();
+            $image->storeAs('public/images', $name);
+        }
+
+        Post::create([
+            'dog_name' => $request->input('dog_name'),
+            'message' => $request->input('message'),
+            'start_date' => $request->input('start_date'),
+            'end_date' => $request->input('end_date'),
+            'price' => $request->input('price'),
+            'species' => $request->input('species'),
+            'user_id' => Auth()->user()->id,
+            'image' => $name,
+        ]);
  
         return redirect(route('posts.index'));
     }
@@ -84,7 +105,16 @@ class PostController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'required|date',
             'price' => 'required|numeric|min:0',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        if($request->hasFile('image')){
+            Storage::delete('public/images/'.$post->image);
+            $image = $request->file('image');
+            $name = time().'.'.$image->extension();
+            $validated['image'] = $name;
+            $image->storeAs('public/images', $name);
+        }
  
         $post->update($validated);
  
@@ -97,6 +127,10 @@ class PostController extends Controller
     public function destroy(Post $post): RedirectResponse
     {
         $this->authorize('delete', $post);
+
+        if($post->image){
+            Storage::delete('public/images/'.$post->image);
+        }
  
         $post->delete();
         

@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
-        <form method="POST" action="{{ route('posts.store') }}">
+        <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
             @csrf
             <textarea
             name="dog_name"
@@ -16,6 +16,7 @@
                 <input type="date" id="start-date" name="start_date" placeholder="Start Date" required class="border-gray-300 mx-2 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent">
                 <input type="date" id="end-date" name="end_date" placeholder="End Date" required class="border-gray-300 mx-2 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent">
             </div>
+            <input name="image" type="file" class="mt-4" accept="jpeg,png,gif">
             <input type="number" step="0.01" name="price" placeholder="{{ __('Price') }}" required class="border-gray-300 mx-2 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent">
             <x-input-error :messages="$errors->get('message')" class="mt-2" />
             <select name=species id="species">
@@ -70,11 +71,27 @@
                             <p class="mt-4 text-lg text-gray-900">{{ $post->message }}</p>
                             <p class="mt-4 text-lg text-gray-900">{{$post->species}}</p>
                             <p>&euro;{{ number_format($post->price, 2, ',', '.') }}</p>
+                            @unless($post->image == null)
+                                <img src="{{ asset('storage/images/' . $post->image) }}" alt="Dog" class="w-full h-64 object-cover mt-4">
+                            @endunless
                             <p class="mt-4 text-lg text-gray-900">
                                 {{ \Carbon\Carbon::parse($post->start_date)->format('j F Y') }}
                                 &middot;
                                 {{ \Carbon\Carbon::parse($post->end_date)->format('j F Y') }}
                             </p>
+                            @unless (Auth()->user()->id == $post->user_id)
+                                @if($aanvragen->isEmpty())
+                                    <a href="/aanvraag/{{ $post->id }}"> Aanvraag doen</a>
+                                @endif
+                                @foreach($aanvragen as $aanvraag)
+                                    @if($post->id == $aanvraag->post_id && Auth()->user()->id == $aanvraag->user_id)
+                                        <p>Je hebt al een aanvraag gedaan</p>
+                                        @break
+                                    @else
+                                        <a href="/aanvraag/{{ $post->id }}"> Aanvraag doen</a>
+                                    @endif
+                                @endforeach
+                            @endunless
                         </div>
                     </div>
                 </div>
