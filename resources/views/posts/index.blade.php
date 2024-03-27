@@ -24,7 +24,7 @@
                                 <a class="bg-mossgreen px-6 py-2 rounded-md text-white mt-4" href="/aanvraag/{{ $post->id }}"> Aanvraag doen</a>
                             @endif
                             @foreach($aanvragen as $aanvraag)
-                                @if($post->id == $aanvraag->post_id && Auth()->user()->id == $aanvraag->user_id)
+                                @if($post->id == $aanvraag->user_id)
                                     <p>Je hebt al een aanvraag gedaan</p>
                                     @break
                                 @else

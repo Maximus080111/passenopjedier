@@ -22,7 +22,8 @@
             
             <div class="bg-mossgreen rounded-lg p-6 mb-4 flex flex-col items-center">
                 <h3 class="text-xl font-semibold mb-4 text-white">My Pets</h3>
-                @foreach(auth()->user()->posts->reverse() as $post)
+                
+                @foreach($posts as $post)
                     <div class="bg-gray-100 rounded-lg p-4 mb-4 border-gray-900 border-2 flex items-center w-full">
                         <div>
                             <div class="flex items-center mb-2">
@@ -70,6 +71,22 @@
                                 &middot;
                                 {{ \Carbon\Carbon::parse($post->end_date)->format('j F Y') }}
                             </p>
+                            @foreach($aanvragen as $aanvraag)
+                                @foreach ($users as $user)
+                                    @if(count($aanvragen) > 1)
+                                        @if (!$aanvraag->user_id == $user->id)
+                                            @continue
+                                        @endif
+                                    @else
+                                        @if (!$aanvraag->user_id == $user->id)
+                                            @continue
+                                        @endif
+                                    @endif
+                                        <p>{{$user->name}} wilt aanvragen</p>
+                                        <a href="/aanvraag/{{$aanvraag->id}}/edit">ja</a>
+                                        <a href="aanvraag/{{$aanvraag->id}}/destroy">nee</a>
+                                @endforeach
+                            @endforeach
                         </div>
                     </div>
                 @endforeach

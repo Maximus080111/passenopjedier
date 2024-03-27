@@ -22,8 +22,10 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    $posts = App\Models\Post::all();
-    return view('dashboard', ['posts' => $posts]);
+    $posts = App\Models\Post::where('user_id', auth()->user()->id)->get();
+    $aanvragen = App\Models\Aanvraag::whereIn('post_id', $posts->pluck('id')->toArray())->get();
+    $users = App\Models\User::whereIn('id', $aanvragen->pluck('user_id')->toArray())->get();
+    return view('dashboard', ['posts' => $posts, 'aanvragen' => $aanvragen, 'users' => $users]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::resource('posts', PostController::class)
@@ -56,6 +58,8 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/aanvraag/{post}', [AanvraagController::class, 'store'])->name('aanvraag.store');
+    Route::get('aanvraag/{aanvraag}/edit', [AanvraagController::class, 'edit'])->name('aanvraag.edit');
+    Route::get('aanvraag/{aanvraag}/destroy', [AanvraagController::class, 'destroy'])->name('aanvraag.destroy');
 });
 
 require __DIR__.'/auth.php';

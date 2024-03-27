@@ -17,4 +17,17 @@ class AanvraagController extends Controller
  
         return redirect(route('posts.index'));
     }
+
+    public function edit(Aanvraag $aanvraag)
+    {
+        $aanvraag->accepted = 1;
+        $aanvraag->save();
+        return redirect(route('dashboard'));
+    }
+
+    public function destroy(Aanvraag $aanvraag)
+    {
+        $aanvraag->delete();
+        return redirect(route('dashboard'));
+    }
 }
