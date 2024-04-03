@@ -58,7 +58,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/aanvraag/{post}', [AanvraagController::class, 'store'])->name('aanvraag.store');
-    Route::get('aanvraag/{aanvraag}/edit', [AanvraagController::class, 'edit'])->name('aanvraag.edit');
+    Route::get('aanvraag/{aanvraag}/{post}/edit', [AanvraagController::class, 'edit'])->name('aanvraag.edit');
     Route::get('aanvraag/{aanvraag}/destroy', [AanvraagController::class, 'destroy'])->name('aanvraag.destroy');
 });
 

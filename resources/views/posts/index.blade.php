@@ -3,6 +3,7 @@
         <a href="{{ route('posts.create') }}" class="bg-mossgreen text-white my-4 font-extrabold px-4 py-4 text-center rounded-lg min-w-full">Create post</a>
         <div class="mt-3 flex flex-col sm:flex-row gap-4 flex-wrap justify-around">
             @foreach ($posts as $post)
+                @unless($post->is_review == 1)
                 <div class="bg-white shadow-sm rounded-lg border-mossgreen h-80 w-full sm:w-2/5 border-4 mb-4 relative">
                     <p class="absolute top-4 right-4 bg-white rounded-full h-20 w-20 flex items-center justify-center text-mossgreen font-extrabold text-xl">&euro;{{ number_format($post->price, 2, ',', '.') }}</p>
                     @unless($post->image == null)
@@ -19,21 +20,26 @@
                                 {{ \Carbon\Carbon::parse($post->end_date)->format('j M') }}
                             </p>
                         </div>
-                        @unless (Auth()->user()->id == $post->user_id)
-                            @if($aanvragen->isEmpty())
-                                <a class="bg-mossgreen px-6 py-2 rounded-md text-white mt-4" href="/aanvraag/{{ $post->id }}"> Aanvraag doen</a>
-                            @endif
-                            @foreach($aanvragen as $aanvraag)
-                                @if($post->id == $aanvraag->user_id)
-                                    <p>Je hebt al een aanvraag gedaan</p>
-                                    @break
+                        @unless (Auth()->user()->id === $post->user_id)
+                                @if ($aanvragen->isEmpty())
+                                    <a href="/aanvraag/{{ $post->id }}">Aanvragen</a>
                                 @else
-                                    <a class="bg-mossgreen px-6 py-2 rounded-md text-white mt-4" href="/aanvraag/{{ $post->id }}"> Aanvraag doen</a>
-                                @endif
-                            @endforeach
+                                    @php $heeftAangevraagd = false; @endphp
+                                    @foreach ($aanvragen as $aanvraag)
+                                        @if ($aanvraag->post_id === $post->id)
+                                            @php $heeftAangevraagd = true; @endphp
+                                            je hebt al aangevraagd
+                                        @break
+                                    @endif
+                                @endforeach
+                                @unless ($heeftAangevraagd)
+                                    <a href="/aanvraag/{{ $post->id }}">Aanvragen</a>
+                                @endunless
+                            @endif
                         @endunless
                     </div>
                 </div>
+                @endunless
             @endforeach
         </div>
     </div>

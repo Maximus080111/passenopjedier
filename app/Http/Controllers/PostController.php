@@ -23,7 +23,7 @@ class PostController extends Controller
         return view('posts.index', [
             'posts' => Post::with('user')->latest()->get(),
             'species'=> Species::all(),
-            'aanvragen' => Aanvraag::All(),
+            'aanvragen' => Aanvraag::where('user_id', Auth()->user()->id)->get(),
         ]);
     }
 

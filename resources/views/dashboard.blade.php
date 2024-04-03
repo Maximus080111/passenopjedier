@@ -71,22 +71,48 @@
                                 &middot;
                                 {{ \Carbon\Carbon::parse($post->end_date)->format('j F Y') }}
                             </p>
-                            @foreach($aanvragen as $aanvraag)
-                                @foreach ($users as $user)
-                                    @if(count($aanvragen) > 1)
-                                        @if (!$aanvraag->user_id == $user->id)
-                                            @continue
-                                        @endif
-                                    @else
-                                        @if (!$aanvraag->user_id == $user->id)
-                                            @continue
-                                        @endif
+                            {{-- @if (!$post->is_review == 1)
+                                @foreach($aanvragen as $aanvraag)
+                                    @if($aanvraag->post_id == $post->id)
+                                        @foreach ($users as $user)
+                                            @if(count($aanvragen) > 1)
+                                                @if ($aanvraag->user_id == $user->id)
+                                                    @continue
+                                                @endif
+                                            @else
+                                                @if (!$aanvraag->user_id == $user->id)
+                                                    @continue
+                                                @endif
+                                            @endif
+                                                <p>{{$user->name}} wilt aanvragen</p>
+                                                <a href="/aanvraag/{{$aanvraag->id}}/{{$post->id}}/edit">ja</a>
+                                                <a href="aanvraag/{{$aanvraag->id}}/destroy">nee</a>
+                                        @endforeach
                                     @endif
-                                        <p>{{$user->name}} wilt aanvragen</p>
-                                        <a href="/aanvraag/{{$aanvraag->id}}/edit">ja</a>
-                                        <a href="aanvraag/{{$aanvraag->id}}/destroy">nee</a>
                                 @endforeach
+                            @else
+                                <p>Review</p>
+                            @endif --}}
+                            @if (!$post->is_review == 1)
+                            @foreach ($aanvragen as $aanvraag)
+                                @if ($aanvraag->post_id == $post->id)
+                                    @foreach ($users as $user)
+                                        @if ($user->id == $aanvraag->user_id)
+                                            <p>{{ $user->name }} wilt aanvragen</p>
+                                            <a href="/aanvraag/{{ $aanvraag->id }}/{{ $post->id }}/edit">ja</a>
+                                            <a href="aanvraag/{{ $aanvraag->id }}/destroy">nee</a>
+                                        @endif
+                                    @endforeach
+                                @endif
                             @endforeach
+                        @else
+                            <p>Plaats je reivew</p>
+                            <textarea
+            name="dog_name"
+            placeholder="{{ __('Place your review') }}"
+            class="block w-full border-gray-300 mb-4 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent"
+            >{{ old('dog_name') }}</textarea>
+                        @endif
                         </div>
                     </div>
                 @endforeach
