@@ -35,4 +35,12 @@ class AanvraagController extends Controller
         $aanvraag->delete();
         return redirect(route('dashboard'));
     }
+
+    public function review(Request $request, Post $post)
+    {
+        $post->review = $request->review;
+        $post->save();
+
+        return redirect(route('dashboard'));
+    }
 }

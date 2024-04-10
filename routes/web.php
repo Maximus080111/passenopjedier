@@ -4,6 +4,8 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AanvraagController;
+use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\PetProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -57,9 +59,20 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/user/{user}', [UserProfileController::class, 'index'])->name('userProfile.index');
+    Route::post('/user/{user}/upload', [UserProfileController::class, 'upload'])->name('userProfile.upload');
+});
+
+Route::middleware('auth')->group(function() {
+    Route::get('/pet/{post}', [PetProfileController::class, 'index'])->name('petProfile.index');
+    Route::post('/pet/{pet}/upload', [PetProfileController::class, 'upload'])->name('petProfile.upload');	
+});
+
+Route::middleware('auth')->group(function () {
     Route::get('/aanvraag/{post}', [AanvraagController::class, 'store'])->name('aanvraag.store');
     Route::get('aanvraag/{aanvraag}/{post}/edit', [AanvraagController::class, 'edit'])->name('aanvraag.edit');
     Route::get('aanvraag/{aanvraag}/destroy', [AanvraagController::class, 'destroy'])->name('aanvraag.destroy');
+    Route::post('aanvraag/{post}/review', [AanvraagController::class, 'review'])->name('aanvraag.review');
 });
 
 require __DIR__.'/auth.php';

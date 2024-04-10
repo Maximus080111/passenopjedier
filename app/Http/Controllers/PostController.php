@@ -40,6 +40,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $name = null;
+        $video_name = null;
 
         $validated = $request->validate([
             'dog_name' => 'required|string|max:255',
@@ -49,12 +50,18 @@ class PostController extends Controller
             'price' => 'required|numeric|min:0',
             'species' => 'required|string|max:20',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'video' => 'mimes:mp4,mov,avi|max:102400',
         ]);
 
         if($request->hasFile('image')){
             $image = $request->file('image');
             $name = time().'.'.$image->extension();
             $image->storeAs('public/images', $name);
+        }
+        if($request->hasFile('video')){
+            $video = $request->file('video');
+            $video_name = time().'.'.$video->extension();
+            $video->storeAs('public/videos', $video_name);
         }
 
         Post::create([
@@ -66,6 +73,7 @@ class PostController extends Controller
             'species' => $request->input('species'),
             'user_id' => Auth()->user()->id,
             'image' => $name,
+            'video' => $video_name,
         ]);
  
         return redirect(route('posts.index'));
@@ -105,7 +113,15 @@ class PostController extends Controller
             'end_date' => 'required|date',
             'price' => 'required|numeric|min:0',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'video' => 'mimes:mp4,mov,avi|max:102400',
         ]);
+
+        if($request->hasFile('video')){
+            Storage::delete('public/videos/'.$post->video);
+            $video = $request->file('video');
+            $video_name = time().'.'.$video->extension();
+            $video->storeAs('public/videos', $video_name);
+        }
 
         if($request->hasFile('image')){
             Storage::delete('public/images/'.$post->image);
@@ -126,6 +142,10 @@ class PostController extends Controller
     public function destroy(Post $post): RedirectResponse
     {
         $this->authorize('delete', $post);
+
+        if($post->video){
+            Storage::delete('public/videos/'.$post->video);
+        }
 
         if($post->image){
             Storage::delete('public/images/'.$post->image);

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->decimal('price', 4, 2); // Adjust precision as needed
             $table->string('species');
             $table->string('image')->nullable();
+            $table->string('video')->nullable();
             $table->boolean('is_review')->default(false);  
             $table->string('review')->nullable();  
             $table->timestamps();

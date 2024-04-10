@@ -62,5 +62,30 @@
                 {{ \Carbon\Carbon::parse($post->end_date)->format('j F Y') }}
             </h1>
         </div>
+        @if (!$post->is_review == 1)
+                            @foreach ($aanvragen as $aanvraag)
+                                @if ($aanvraag->post_id == $post->id)
+                                    @foreach ($users as $user)
+                                        @if ($user->id == $aanvraag->user_id)
+                                            <p>{{ $user->name }} wilt aanvragen</p>
+                                            <a href="aanvraag/{{ $aanvraag->id }}/{{ $post->id }}/edit">ja</a>
+                                            <a href="aanvraag/{{ $aanvraag->id }}/destroy">nee</a>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            @endforeach
+        @else
+                            @if ($post->review == null)
+                                <form method="POST" action="{{ url('aanvraag/' . $post->id . '/review') }}"
+                                    enctype="multipart/form-data">
+                                    @csrf
+                                    <textarea name="review" placeholder="{{ __('Schrijf je review?') }}"
+                                        class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">{{ old('pet') }}</textarea>
+                                    <x-primary-button>verstuur review</x-primary-button>
+                                </form>
+                            @else
+                                {{ $post->review }}
+                            @endif
+                        @endif
     </div>
 </div>

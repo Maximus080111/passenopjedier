@@ -30,11 +30,11 @@
             {{-- <span class="text-xs text-center text-gray-500">
                 <img src="imageUrl" :src="imageUrl" alt="photo of your animal" class="w-full object-cover object-center border-dashed h-52 border-2 rounded-lg dark:border-gray-600 dark:bg-gray-900 bg-white text-center">
             </span> --}}
-            <div class="my-4">
+            <div class="my-4 w-full">
                 {{-- <label for="file" class="block text-sm text-gray-500 dark:text-gray-300">File</label> --}}
             
-                <label for="photo-animal" class="flex flex-col items-center w-full max-w-lg p-5 mx-auto mt-2 text-center bg-white border-2 border-gray-300 border-dashed cursor-pointer dark:bg-gray-900 dark:border-gray-700 rounded-xl">
-                    <img :src="imageUrl" onerror="">
+                <label for="photo-animal" class="flex flex-col items-center w-full p-5 mx-auto mt-2 text-center bg-white border-2 border-gray-300 border-dashed cursor-pointer dark:bg-gray-900 dark:border-gray-700 rounded-xl">
+                    <img :src="imageUrl" onerror="" class="max-h-56">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-500 dark:text-gray-400">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
                     </svg>
@@ -47,6 +47,30 @@
                     <input @change="fileChosen(event)""  id="photo-animal" name="image" type="file" class="mt-4 hidden" accept="jpeg,png,gif">
                 </label>
             </div>
+            <div class="my-4 w-full">
+                {{-- <label for="file" class="block text-sm text-gray-500 dark:text-gray-300">File</label> --}}
+            
+                <label for="videoUpload" class="flex flex-col items-center w-full p-5 mx-auto mt-2 text-center bg-white border-2 border-gray-300 border-dashed cursor-pointer dark:bg-gray-900 dark:border-gray-700 rounded-xl">
+                    <video :src="videoUrl" style="display:none" controls autoplay class="max-h-56"></video>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-500 dark:text-gray-400">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
+                    </svg>
+
+                    <h2 class="mt-1 font-medium tracking-wide text-gray-700 dark:text-gray-200">Animal video file</h2>
+
+                    <p class="mt-2 text-xs tracking-wide text-gray-500 dark:text-gray-400">Upload your file MP4, OVI or MOVI</p>
+
+                    <input id="videoUpload" name="video" type="file" class="mt-4 hidden" accept="video/*">
+                </label>
+                <script>
+                    document.getElementById("videoUpload").onchange = function(event) {
+                        let file = event.target.files[0];
+                        let blobURL = URL.createObjectURL(file);
+                        document.querySelector("video").style.display = 'block';
+                        document.querySelector("video").src = blobURL;
+                    }
+                </script>
+            </div>
             <input type="number" step="0.01" name="price" placeholder="{{ __('Price') }}" required class="border-gray-300 mx-2 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent">
             <x-input-error :messages="$errors->get('message')" class="mt-2" />
             <select name=species id="species">
@@ -58,24 +82,26 @@
         </form>
         <script>
             function picturePreview() {
-        return {
-            imageUrl: "",
-    
-            fileChosen(event) {
-                this.fileToDataUrl(event, (src) => (this.imageUrl = src));
-            },
-    
-            fileToDataUrl(event, callback) {
-                if (!event.target.files.length) return;
-    
-                let file = event.target.files[0],
-                    reader = new FileReader();
-    
-                reader.readAsDataURL(file);
-                reader.onload = (e) => callback(e.target.result);
-            },
-        };
-    }
+                
+                return {
+                    imageUrl: "",
+
+                    fileChosen(event) {
+                        this.fileToDataUrl(event, (src) => (this.imageUrl = src));
+                    },
+
+                    fileToDataUrl(event, callback) {
+                        if (!event.target.files.length) return;
+
+                        let file = event.target.files[0],
+                            reader = new FileReader();
+
+                        reader.readAsDataURL(file);
+                        reader.onload = (e) => callback(e.target.result);
+                    },
+                };
+            }
         </script>
+
     </div>
 </x-app-layout>

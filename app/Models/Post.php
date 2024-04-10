@@ -19,6 +19,7 @@ class Post extends Model
         'price',
         'species',
         'image',
+        'video',
         'user_id',	
         'review',
     ];
