@@ -8,7 +8,6 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-gray-600 rounded-lg p-6 mb-4 text-center flex items-center flex-col">
                 <h3 class="text-xl text-white font-semibold mb-4">Your profile</h3>
-                <a href="/user/2">hoi</a>
                 @if(auth()->user()->image)
                     <div class="rounded-full h-20 w-20 bg-gray-300 mb-4">
                         <img src="{{ auth()->user()->image }}" alt="User Image" class="rounded-full h-20 w-20 mb-4">
@@ -23,10 +22,11 @@
             
             <div class="bg-gray-600 rounded-lg p-6 mb-4 flex flex-col items-center">
                 <h3 class="text-xl font-semibold mb-4 text-white">My Pets</h3>
-                
-                @foreach($posts as $post)
-                    <x-animal-card-dashboard :post="$post" :aanvragen="$aanvragen" :users="$users" />
-                @endforeach
+                <div class="flex gap-4 justify-around w-full flex-wrap">
+                    @foreach($posts as $post)
+                        <x-animal-card-dashboard :post="$post" :aanvragen="$aanvragen" :users="$users" />
+                    @endforeach
+                </div>
                 <a href="{{ route('posts.create') }}" class="bg-white text-bg-gray-900 font-extrabold px-4 py-4 text-center rounded-lg w-full">Create post</a>
             </div>
         </div>

@@ -25,7 +25,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     $posts = App\Models\Post::where('user_id', auth()->user()->id)->get();
-    $aanvragen = App\Models\Aanvraag::whereIn('post_id', $posts->pluck('id')->toArray())->get();
+    $aanvragen = App\Models\Aanvraag::all();
     $users = App\Models\User::whereIn('id', $aanvragen->pluck('user_id')->toArray())->get();
     return view('dashboard', ['posts' => $posts, 'aanvragen' => $aanvragen, 'users' => $users]);
 })->middleware(['auth', 'verified'])->name('dashboard');

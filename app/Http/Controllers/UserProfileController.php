@@ -7,6 +7,7 @@ use Illuminate\View\View;
 use App\Models\User;
 use App\Models\Post;
 use App\Models\userProfile;
+use App\Models\Aanvraag;
 
 class UserProfileController extends Controller
 {
@@ -14,10 +15,12 @@ class UserProfileController extends Controller
     {
         $Puser = User::where('id', $user->id)->first();
         $Puser_img = userProfile::where('user_id', $user->id)->get();
+        $posts = Post::where('user_id', $user->id)->get();
         return view('userProfile.index', [
             'user' => $Puser,
             'images' => $Puser_img,
             'posts' => Post::all(),
+            'petInfo' => $posts,
         ]);
     }
 

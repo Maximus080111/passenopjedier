@@ -11,17 +11,82 @@ use Illuminate\View\View;
 use Illuminate\Http\Request;
 use App\Models\Aanvraag;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index() : View
+    public function index(Request $request) : View
     {
-        $species = DB::table('species')->get();
+        // $species = DB::table('species')->get();
+        $speciesFilter = $request->query('species');
+        $priceFilter = $request->query('price_max');
+        $startDateFilter = $request->query('start_date');
+        $endDateFilter = $request->query('end_date');
+
+        if ($speciesFilter && $priceFilter && $startDateFilter && $endDateFilter) {
+            $posts = Post::with('user')
+            ->where('species', $speciesFilter)
+            ->where('price', '<=', $priceFilter)
+            ->where('start_date', '>=', $startDateFilter)
+            ->where('end_date', '<=', $endDateFilter)
+            ->latest()
+            ->get();
+        } elseif ($speciesFilter && $startDateFilter && $endDateFilter) {
+            $posts = Post::with('user')
+            ->where('species', $speciesFilter)
+            ->where('start_date', '>=', $startDateFilter)
+            ->where('end_date', '<=', $endDateFilter)
+            ->latest()
+            ->get();
+        } elseif ($speciesFilter && $priceFilter) {
+            $posts = Post::with('user')
+            ->where('species', $speciesFilter)
+            ->where('price', '<=', $priceFilter)
+            ->latest()
+            ->get();
+        } elseif ($speciesFilter) {
+            $posts = Post::with('user')
+            ->where('species', $speciesFilter)
+            ->latest()
+            ->get();
+        } elseif ($priceFilter && $startDateFilter && $endDateFilter) {
+            $posts = Post::with('user')
+            ->where('price', '<=', $priceFilter)
+            ->where('start_date', '>=', $startDateFilter)
+            ->where('end_date', '<=', $endDateFilter)
+            ->latest()
+            ->get();
+        } elseif ($priceFilter) {
+            $posts = Post::with('user')
+            ->where('price', '<=', $priceFilter)
+            ->latest()
+            ->get();
+        } elseif ($startDateFilter && $endDateFilter) {
+            $posts = Post::with('user')
+            ->where('start_date', '>=', $startDateFilter)
+            ->where('end_date', '<=', $endDateFilter)
+            ->latest()
+            ->get();
+        } elseif ($startDateFilter) {
+            $posts = Post::with('user')
+            ->where('start_date', '>=', $startDateFilter)
+            ->latest()
+            ->get();
+        } elseif ($endDateFilter) {
+            $posts = Post::with('user')
+            ->where('end_date', '<=', $endDateFilter)
+            ->latest()
+            ->get();
+        } else {
+            $posts = Post::with('user')->latest()->get();
+        }
+
         return view('posts.index', [
-            'posts' => Post::with('user')->latest()->get(),
+            // 'posts' => Post::with('user')->latest()->get(),
+            'posts' => $posts,
             'species'=> Species::all(),
             'aanvragen' => Aanvraag::where('user_id', Auth()->user()->id)->get(),
         ]);
@@ -93,9 +158,12 @@ class PostController extends Controller
     public function edit(Post $post): View
     {
         $this->authorize('update', $post);
+
+        $species = DB::table('species')->get();
  
         return view('posts.edit', [
             'post' => $post,
+            'species' => $species,
         ]);
     }
 
@@ -106,21 +174,47 @@ class PostController extends Controller
     {
         $this->authorize('update', $post);
  
-        $validated = $request->validate([
-            'dog_name' => 'required|string|max:255',
-            'message' => 'required|string|max:255',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
-            'price' => 'required|numeric|min:0',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'video' => 'mimes:mp4,mov,avi|max:102400',
-        ]);
+        // $validated = $request->validate([
+        //     'dog_name' => 'required|string|max:255',
+        //     'message' => 'required|string|max:255',
+        //     'start_date' => 'required|date',
+        //     'end_date' => 'required|date',
+        //     'price' => 'required|numeric|min:0',
+        //     'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        //     'video' => 'mimes:mp4,mov,avi|max:102400',
+        // ]);
+        // if($request->hasFile('video')){
+        //     Storage::delete('public/videos/'.$post->video);
+        //     $video = $request->file('video');
+        //     $video_name = time().'.'.$video->extension();
+        //     $video->storeAs('public/videos', $video_name);
+        // }
+
+        // if($request->hasFile('image')){
+        //     Storage::delete('public/images/'.$post->image);
+        //     $image = $request->file('image');
+        //     $name = time().'.'.$image->extension();
+        //     $validated['image'] = $name;
+        //     $image->storeAs('public/images', $name);
+        // }
+        
+        
+        $updateData = [
+            'dog_name' => $request->input('dog_name'),
+            'message' => $request->input('message'),
+            'start_date' => $request->input('start_date'),
+            'end_date' => $request->input('end_date'),
+            'price' => $request->input('price'),
+            'species' => $request->input('species'),
+            'user_id' => Auth()->user()->id,
+        ];
 
         if($request->hasFile('video')){
             Storage::delete('public/videos/'.$post->video);
             $video = $request->file('video');
             $video_name = time().'.'.$video->extension();
             $video->storeAs('public/videos', $video_name);
+            $updateData['video'] = $video_name;
         }
 
         if($request->hasFile('image')){
@@ -129,10 +223,12 @@ class PostController extends Controller
             $name = time().'.'.$image->extension();
             $validated['image'] = $name;
             $image->storeAs('public/images', $name);
+            $updateData['image'] = $name;
         }
- 
-        $post->update($validated);
- 
+        
+        
+        $post->update($updateData);
+        
         return redirect(route('posts.index'));
     }
 

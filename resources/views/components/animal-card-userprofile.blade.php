@@ -1,29 +1,4 @@
 <div class="w-full my-4 max-w-sm overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800 relative">
-    <div class="absolute right-5 top-5 z-20 bg-gray-800 flex justify-center w-6 h-6 rounded-full">
-        @if ($post->user->is(auth()->user()))
-                    <x-dropdown>
-                        <x-slot name="trigger">
-                            <button>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-4 text-white" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                                </svg>
-                            </button>
-                        </x-slot>
-                        <x-slot name="content">
-                            <x-dropdown-link :href="route('posts.edit', $post)">
-                                {{ __('Edit') }}
-                            </x-dropdown-link>
-                            <form method="POST" action="{{ route('posts.destroy', $post) }}">
-                                @csrf
-                                @method('delete')
-                                <x-dropdown-link :href="route('posts.destroy', $post)" onclick="event.preventDefault(); this.closest('form').submit();">
-                                    {{ __('Delete') }}
-                                </x-dropdown-link>
-                            </form>
-                        </x-slot>
-                    </x-dropdown>
-                @endif
-    </div>
     @unless($post->image == null)
         <img src="{{ asset('storage/images/' . $post->image) }}" alt="Pet image" class="object-cover object-center w-full h-56">
     @endunless
@@ -51,7 +26,7 @@
             <h1 class="px-2 text-sm">&euro;{{ number_format($post->price, 2, ','  ,   '.') }}</h1>
         </div>
 
-        <div class="flex items-center mt-4 text-gray-700 dark:text-gray-200">
+        <div class="flex items-center my-4 text-gray-700 dark:text-gray-200">
             <svg class="w-6 h-6 text-white fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <path d="M19,4H17V3a1,1,0,0,0-2,0V4H9V3A1,1,0,0,0,7,3V4H5A3,3,0,0,0,2,7V19a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3V7A3,3,0,0,0,19,4Zm1,15a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V12H20Zm0-9H4V7A1,1,0,0,1,5,6H7V7A1,1,0,0,0,9,7V6h6V7a1,1,0,0,0,2,0V6h2a1,1,0,0,1,1,1Z"/>
             </svg>
@@ -62,34 +37,6 @@
                 {{ \Carbon\Carbon::parse($post->end_date)->format('j F Y') }}
             </h1>
         </div>
-        @if (!$post->is_review == 1)
-                            @foreach ($aanvragen as $aanvraag)
-                                @if ($aanvraag->post_id == $post->id)
-                                    @foreach ($users as $user)
-                                        @if ($user->id == $aanvraag->user_id)
-                                            <div class="bg-gray-200 my-4 p-2 rounded-md">
-                                                <p class="text-gray-800 font-semibold text-center text-lg mb-2">{{ $user->name }} wilt aanvragen</p>
-                                                <div class="flex justify-center">
-                                                    <a class="bg-green-700 w-1/2 mx-2 text-center py-2 rounded-md text-white font-semibold" href="aanvraag/{{ $aanvraag->id }}/{{ $post->id }}/edit">ja</a>
-                                                    <a class="bg-red-700 w-1/2 mx-2 text-center py-2 rounded-md font-semibold text-white" href="aanvraag/{{ $aanvraag->id }}/destroy">nee</a>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                @endif
-                            @endforeach
-        @else
-                            @if ($post->review == null)
-                                <form method="POST" action="{{ url('aanvraag/' . $post->id . '/review') }}"
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    <textarea name="review" placeholder="{{ __('Schrijf je review!') }}"
-                                        class="block w-full my-4 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm">{{ old('pet') }}</textarea>
-                                    <x-primary-button class="w-full py-4">verstuur review</x-primary-button>
-                                </form>
-                            @else
-                                {{ $post->review }}
-                            @endif
-                        @endif
+        <a class="underline text-blue-500" href="/pet/{{$post->user_id}}">View {{$post->dog_name}}</a>
     </div>
 </div>
