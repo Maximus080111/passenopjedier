@@ -5,17 +5,17 @@
             @csrf
             <textarea
             name="dog_name"
-            placeholder="{{ __('What\'s dogs name?') }}"
-            class="block w-full border-gray-300 mb-4 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent"
+            placeholder="{{ __('What\'s the pets name?') }}"
+            class="block w-full border-gray-300 text-gray-900 dark:text-white mb-4 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent"
             >{{ old('dog_name') }}</textarea>
             <textarea
             name="message"
-            placeholder="{{ __('What\'s on your mind?') }}"
-            class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent"
+            placeholder="{{ __('Place the desciption of your pet here') }}"
+            class="block w-full border-gray-300 text-gray-900 dark:text-white focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent"
             >{{ old('message') }}</textarea>
             <div class="date-picker flex justify- justify-center space-x-2 my-4">
-                <input type="date" id="start-date" name="start_date" placeholder="Start Date" required class="border-gray-300 mx-2 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent">
-                <input type="date" id="end-date" name="end_date" placeholder="End Date" required class="border-gray-300 mx-2 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent">
+                <input type="date" id="start-date" name="start_date" placeholder="Start Date" required class="border-gray-300 mx-2 text-gray-900 dark:text-white focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent">
+                <input type="date" id="end-date" name="end_date" placeholder="End Date" required class="border-gray-300 mx-2 text-gray-900 dark:text-white focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent">
             </div>
             {{-- <label for="photo-animal" class="flex items-center px-3 py-3 mx-auto mt-6 text-center bg-white border-2 border-dashed rounded-lg cursor-pointer dark:border-gray-600 dark:bg-gray-900">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -39,7 +39,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
                     </svg>
             
-                    <h2 class="mt-1 font-medium tracking-wide text-gray-700 dark:text-gray-200">Animal photo file</h2>
+                    <h2 class="mt-1 font-medium tracking-wide text-gray-700 dark:text-gray-200">Pet photo file</h2>
             
                     <p class="mt-2 text-xs tracking-wide text-gray-500 dark:text-gray-400">Upload your file JPEG, PNG or JPG</p>
             
@@ -56,7 +56,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
                     </svg>
 
-                    <h2 class="mt-1 font-medium tracking-wide text-gray-700 dark:text-gray-200">Animal video file</h2>
+                    <h2 class="mt-1 font-medium tracking-wide text-gray-700 dark:text-gray-200">Pet video file</h2>
 
                     <p class="mt-2 text-xs tracking-wide text-gray-500 dark:text-gray-400">Upload your file MP4, OVI or MOVI</p>
 
@@ -71,13 +71,21 @@
                     }
                 </script>
             </div>
-            <input type="number" step="0.01" name="price" placeholder="{{ __('Price') }}" required class="border-gray-300 mx-2 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent">
-            <x-input-error :messages="$errors->get('message')" class="mt-2" />
-            <select name=species id="species">
-                @foreach ($species as $kind)
-                    <option value="{{ $kind->animal_species }}">{{ $kind->animal_species }}</option>
-                @endforeach
-            </select>
+            <div class="flex flex-wrap justify-around items-center my-6">
+                <div class="flex flex-col">
+                    <label class="text-white" for="price">Price per hour</label>
+                    <input type="number" step="0.01" name="price" placeholder="{{ __('Price') }}" required class="border-gray-300 max-w-60 text-gray-900 dark:text-white focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent">
+                </div>
+                <x-input-error :messages="$errors->get('message')" class="mt-2" />
+                <div class="flex flex-col">
+                    <label class="text-white" for="species">Type of pet</label>
+                    <select class="max-w-60" name=species id="species">
+                        @foreach ($species as $kind)
+                            <option value="{{ $kind->animal_species }}">{{ $kind->animal_species }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
             <x-primary-button class="mt-4 w-full py-4 flex items-center justify-center bg-blue-500">{{ __('Post') }}</x-primary-button>
         </form>
         <script>

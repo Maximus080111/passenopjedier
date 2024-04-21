@@ -3,7 +3,7 @@
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />
         <div class="flex justify-center mx-auto">
-            <img class="w-auto h-7 sm:h-8" src="https://merakiui.com/images/logo.svg" alt="">
+            <img class="w-auto h-14 sm:h-15" src="/images/passenopjedier_logo.png" alt="PassenOpJeDier logo">
         </div>
 
         <h3 class="mt-3 text-xl font-medium text-center text-gray-600 dark:text-gray-200">Welcome Back</h3>
