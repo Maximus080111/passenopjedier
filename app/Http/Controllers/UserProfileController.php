@@ -15,12 +15,12 @@ class UserProfileController extends Controller
     {
         $Puser = User::where('id', $user->id)->first();
         $Puser_img = userProfile::where('user_id', $user->id)->get();
-        $posts = Post::where('user_id', $user->id)->get();
+        $pets = Post::where('user_id', $user->id)->get();
         return view('userProfile.index', [
             'user' => $Puser,
             'images' => $Puser_img,
             'posts' => Post::all(),
-            'petInfo' => $posts,
+            'petInfo' => $pets,
         ]);
     }
 

@@ -14,7 +14,7 @@
     </div>
 
     <div class="px-6 py-4">
-        <h1 class="text-xl font-semibold text-gray-800 dark:text-white">{{$post->dog_name}}</h1>
+        <h1 class="text-xl font-semibold text-gray-800 dark:text-white">{{$post->pet_name}}</h1>
 
         <p class="py-2 text-gray-700 dark:text-gray-400">{{$post->message}}</p>
 
@@ -37,6 +37,6 @@
                 {{ \Carbon\Carbon::parse($post->end_date)->format('j F Y') }}
             </h1>
         </div>
-        <a class="underline text-blue-500" href="/pet/{{$post->user_id}}">View {{$post->dog_name}}</a>
+        <a class="underline text-blue-500" href="/pet/{{$post->id}}">View {{$post->pet_name}}</a>
     </div>
 </div>

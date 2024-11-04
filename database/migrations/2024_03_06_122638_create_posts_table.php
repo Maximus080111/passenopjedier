@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->string('dog_name');
+            $table->string('pet_name');
             $table->string('message');
             $table->date('start_date');
             $table->date('end_date');

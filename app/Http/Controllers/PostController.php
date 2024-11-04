@@ -108,7 +108,7 @@ class PostController extends Controller
         $video_name = null;
 
         $validated = $request->validate([
-            'dog_name' => 'required|string|max:255',
+            'pet_name' => 'required|string|max:255',
             'message' => 'required|string|max:255',
             'start_date' => 'required|date',
             'end_date' => 'required|date',
@@ -130,7 +130,7 @@ class PostController extends Controller
         }
 
         Post::create([
-            'dog_name' => $request->input('dog_name'),
+            'pet_name' => $request->input('pet_name'),
             'message' => $request->input('message'),
             'start_date' => $request->input('start_date'),
             'end_date' => $request->input('end_date'),
@@ -200,7 +200,7 @@ class PostController extends Controller
         
         
         $updateData = [
-            'dog_name' => $request->input('dog_name'),
+            'pet_name' => $request->input('pet_name'),
             'message' => $request->input('message'),
             'start_date' => $request->input('start_date'),
             'end_date' => $request->input('end_date'),

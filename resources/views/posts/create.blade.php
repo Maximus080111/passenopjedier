@@ -4,10 +4,10 @@
         <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
             @csrf
             <textarea
-            name="dog_name"
+            name="pet_name"
             placeholder="{{ __('What\'s the pets name?') }}"
             class="block w-full border-gray-300 text-gray-900 dark:text-white mb-4 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent"
-            >{{ old('dog_name') }}</textarea>
+            >{{ old('pet_name') }}</textarea>
             <textarea
             name="message"
             placeholder="{{ __('Place the desciption of your pet here') }}"

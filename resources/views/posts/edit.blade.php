@@ -4,10 +4,10 @@
             @csrf
             @method('patch')
             <textarea
-            name="dog_name"
+            name="pet_name"
             placeholder="{{ __('What\'s dogs name?') }}"
             class="block w-full border-gray-300 mb-4 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm dark:bg-transparent dark:text-white"
-            >{{ old('dog_name', $post->dog_name) }}</textarea>
+            >{{ old('pet_name', $post->pet_name) }}</textarea>
             <textarea
                 name="message"
                 class="block w-full border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"

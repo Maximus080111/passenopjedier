@@ -12,7 +12,7 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = [
-        'dog_name',
+        'pet_name',
         'message',
         'start_date',
         'end_date',

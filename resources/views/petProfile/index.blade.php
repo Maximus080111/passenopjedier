@@ -1,7 +1,7 @@
 <x-app-layout>
         <img class="h-96 object-cover object-center w-full" src="{{asset('storage/images/' . $post->image)}}" alt="">
         <div class=" mx-10">
-                <h1 class="text-center text-white text-4xl font-bold my-8">{{$post->dog_name}}</h1>
+                <h1 class="text-center text-white text-4xl font-bold my-8">{{$post->pet_name}}</h1>
                 <div class="flex flex-col justify-center mb-6">
                         <a class="text-center mb-4 dark:text-white text-gray-900 underline" href="/user/{{$post->user_id}}">Owner: {{$user->name}}</a>
                         <div class="flex flex-col items-center mb-4">
@@ -22,10 +22,13 @@
                         </div>
                 </div>
                 <div>
-                        <h2 class="text-center mb-4 dark:text-white text-gray-900 text-2xl font-semibold">images and videos of {{$post->dog_name}}</h2>
+                        <h2 class="text-center mb-4 dark:text-white text-gray-900 text-2xl font-semibold">images and videos of {{$post->pet_name}}</h2>
                         <div class="flex gap-8 justify-center flex-wrap">
                                 <img class="h-56 w-92" src="{{asset('storage/images/' . $post->image)}}" alt="">
-                                <video class="h-56 w-auto" controls src="{{ asset('storage/videos/' . $post->video)}}"></video>
+                                @if($post->video !== NULL) {
+                                        <video class="h-56 w-auto" controls src="{{ asset('storage/videos/' . $post->video)}}"></video>
+                                }
+                                @endif
                         </div>
                 </div>
         </div>

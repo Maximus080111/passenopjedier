@@ -52,7 +52,7 @@
     </div>
 
     <div class="px-6 py-4">
-        <h1 class="text-xl font-semibold text-gray-800 dark:text-white">{{$post->dog_name}}</h1>
+        <h1 class="text-xl font-semibold text-gray-800 dark:text-white">{{$post->pet_name}}</h1>
 
         <p class="py-2 text-gray-700 dark:text-gray-400">{{$post->message}}</p>
 
