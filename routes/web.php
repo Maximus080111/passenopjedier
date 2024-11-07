@@ -34,18 +34,6 @@ Route::resource('posts', PostController::class)
     ->only(['index', 'store', 'edit', 'update', 'destroy', 'create'])
     ->middleware(['auth', 'verified']);
 
-// Route::get('/admin', function () {
-//     if (auth()->user()->is_admin) {
-//         return view('admin', ['users' => App\Models\User::all(), 'posts' => App\Models\Post::all()]);
-//     } else {
-//         abort(403, 'Unauthorized');
-//     }
-// })->middleware(['auth', 'verified'])->name('admin');
-
-// Route::resource('admin', UserController::class)
-//     ->only(['edit', 'update', 'index'])
-//     ->middleware(['auth', 'verified']);
-
 Route::middleware('auth')->group(function () {
     Route::get('/admin', [UserController::class, 'index'])->name('admin.index');
     Route::get('/admin/{user}/block', [UserController::class, 'block'])->name('admin.blockUser');
