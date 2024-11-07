@@ -48,8 +48,8 @@ Route::resource('posts', PostController::class)
 
 Route::middleware('auth')->group(function () {
     Route::get('/admin', [UserController::class, 'index'])->name('admin.index');
-    Route::get('/admin/{user}/block', [UserController::class, 'block'])->name('admin.block');
-    Route::get('/admin/{user}/admin', [UserController::class, 'admin'])->name('admin.admin');
+    Route::get('/admin/{user}/block', [UserController::class, 'block'])->name('admin.blockUser');
+    Route::get('/admin/{user}/admin', [UserController::class, 'admin'])->name('admin.toggleAdmin');
 });
 
 Route::middleware('auth')->group(function () {

@@ -12,18 +12,14 @@
                         @unless(Auth()->user()->id == $user->id)
                             <div class="mt-4 flex">
                                 <div class="bg-gray-800 mx-4 px-4 py-2 text-white rounded-md">
-                                    @if($user->is_blocked)
-                                        <a href="/admin/{{$user->id}}/block">unblock user</a>
-                                    @else
-                                        <a href="/admin/{{$user->id}}/block">block user</a>
-                                    @endif
+                                        <a href="{{route('admin.blockUser', $user->id) }}">
+                                            {{ $user->is_blocked ? 'unblock user' : 'block user' }}
+                                        </a>
                                 </div>
                                 <div class="bg-gray-800 mx-4 px-4 py-2 text-white rounded-md">
-                                    @if($user->is_admin)
-                                        <a href="/admin/{{$user->id}}/admin">remove admin</a>
-                                    @else
-                                        <a href="/admin/{{$user->id}}/admin">make admin</a>
-                                    @endif
+                                        <a href="{{route('admin.toggleAdmin', $user->id)}}">
+                                            {{ $user->is_admin ? 'remove admin' : 'make admin' }}
+                                        </a>
                                 </div>
                             </div>
                         @endunless
