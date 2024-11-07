@@ -8,17 +8,24 @@ use App\Models\User;
 use App\Models\Post;
 use App\Models\userProfile;
 use App\Models\Aanvraag;
+use Illuminate\Support\Facades\Auth;
 
 class UserProfileController extends Controller
 {
     public function index(User $user) : View
     {
-        $Puser = User::findOrFail($user->id);
-        $Puser_img = userProfile::where('user_id', $user->id)->get();
+        $currentuser = Auth::user();
+        $isCurrentUser = $currentuser && $currentuser->id == $user->id;
+        $images = userProfile::where('user_id', $user->id)->get();
+        $hasImages = $images->whereNotNull('image_user')->isNotEmpty();
+        $hasVideos = $images->whereNotNull('video_user')->isNotEmpty();
         $pets = Post::where('user_id', $user->id)->get();
         return view('userProfile.index', [
-            'user' => $Puser,
-            'images' => $Puser_img,
+            'user' => $user,
+            'images' => $images,
+            'isCurrentUser' => $isCurrentUser,
+            'hasImages' => $hasImages,
+            'hasVideos' => $hasVideos,
             'petInfo' => $pets,
         ]);
     }

@@ -1,7 +1,5 @@
 <x-app-layout>
-    
-    
-    @if ($user->id == Auth()->user()->id)
+    @if ($isCurrentUser)
     <h1 class="dark:text-white text-gray-900 font-bold text-center text-4xl my-6">Upload photo's of your home</h1>
     <div class="flex justify-center">
         <form class="mx-6" enctype="multipart/form-data" method="POST" action="{{{url('user/'. $user->id . '/upload')}}}">
@@ -20,22 +18,23 @@
     @endif
     <div class="my-4 mt-20 mx-6">
         <h1 class="dark:text-white text-gray-900 text-4xl text-center mt-6 font-bold">{{$user->name}}</h1>
-        <h2 class="dark:text-white text-gray-900 font-semibold text-xl mt-4">Images user</h2>
-        <div class="flex gap-5 overflow-x-auto">
-            @foreach($images as $image)
-                    @if($image->image_user)
-                        <img src="{{ asset('storage/images_users/' . $image->image_user)}}" alt="User Image" class="h-60 w-80 object-cover object-center">
-                    @endif
-            @endforeach
-        </div>
-        <h2 class="dark:text-white text-gray-900 font-semibold text-xl mt-4">Videos user</h2>
-        <div class="flex gap-5 overflow-x-auto">
-            @foreach($images as $image)
-                @if ($image->video_user)
-                    <video class="w-90 h-60 object-cover object-center" src="{{ asset('storage/videos_users/' . $image->video_user)}}" controls></video>
-                @endif
-            @endforeach
-        </div>
+        @if($hasImages)
+            <h2 class="dark:text-white text-gray-900 font-semibold text-xl mt-4">Images user</h2>
+            <div class="flex gap-5 overflow-x-auto">
+                @foreach($images as $image)
+                            <img src="{{ asset('storage/images_users/' . $image->image_user)}}" alt="User Image" class="h-60 w-80 object-cover object-center">
+                @endforeach
+            </div>
+        @endif
+
+        @if($hasVideos)
+            <h2 class="dark:text-white text-gray-900 font-semibold text-xl mt-4">Videos user</h2>
+            <div class="flex gap-5 overflow-x-auto">
+                @foreach($images as $image)
+                        <video class="w-90 h-60 object-cover object-center" src="{{ asset('storage/videos_users/' . $image->video_user)}}" controls></video>
+                @endforeach
+            </div>
+        @endif
     </div>
     <div class="mx-6">
         <h1 class="dark:text-white text-gray-900 text-4xl text-center mt-6 font-bold ">users pets</h1>

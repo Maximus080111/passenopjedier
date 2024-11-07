@@ -25,16 +25,16 @@ class UserSeeder extends Seeder
             'updated_at' => now(),
         ]);
 
-        // DB::table('users')->insert([
-        //     'name' => 'Test User',
-        //     'email' => 'user1@email.com',
-        //     'email_verified_at' => null,
-        //     'password' => bcrypt('12345678'),
-        //     'is_blocked' => 0,
-        //     'is_admin' => 0,
-        //     'remember_token' => null,
-        //     'created_at' => now(),
-        //     'updated_at' => now(),
-        // ]);
+        DB::table('users')->insert([
+            'name' => 'Test User',
+            'email' => 'user1@email.com',
+            'email_verified_at' => null,
+            'password' => bcrypt('12345678'),
+            'is_blocked' => 0,
+            'is_admin' => 0,
+            'remember_token' => null,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }
