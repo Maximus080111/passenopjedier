@@ -6,14 +6,25 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\View\View;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     public function index(): View {
-        return view('admin.index', [
-            'users' => User::all(),
-            'posts' => Post::with('user')->latest()->get(),
-        ]);
+        if(!auth()->user()->is_admin) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $users = User::all();
+        $posts = Post::all();
+        $currentUserId = Auth::id();
+
+        $users = $users->map(function ($user) use ($currentUserId) {
+            $user->can_manage = $user->id !== $currentUserId;
+            return $user;
+        });
+
+        return view('admin.index', compact('users', 'posts'));
     }
 
     public function block(User $user) {

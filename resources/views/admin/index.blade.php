@@ -1,7 +1,4 @@
 <x-app-layout>
-    @if (!auth()->user()->is_admin)
-            @abort (403, 'You are not authorized to view this page')
-    @else
         <h1 class="text-gray-200 text-3xl text-center p-6 pb-4">All current users</h1>
         <div class="flex justify-center items-center flex-col mx-10">
             @foreach($users as $user)
@@ -9,7 +6,7 @@
                     <div class="card-body">  
                         <h5 class="card-title text-xl font-bold text-gray-900">{{ $user->name }} </h5>
                         <p class="card-text text-gray-600">{{ $user->email }}</p>
-                        @unless(Auth()->user()->id == $user->id)
+                        @if($user->can_manage)
                             <div class="mt-4 flex">
                                 <div class="bg-gray-800 mx-4 px-4 py-2 text-white rounded-md">
                                         <a href="{{route('admin.blockUser', $user->id) }}">
@@ -22,7 +19,7 @@
                                         </a>
                                 </div>
                             </div>
-                        @endunless
+                        @endif
                     </div>
                 </div>
             @endforeach
@@ -34,5 +31,4 @@
                 <x-animal-card-admin :post="$post"  />
             @endforeach
         </div>
-    @endif
 </x-app-layout>
