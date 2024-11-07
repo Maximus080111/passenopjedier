@@ -12,10 +12,11 @@ class PetProfileController extends Controller
 {
     public function index(Post $post) : View
     {
-        $user = User::where('id', $post->user_id)->first();
-        return view('petProfile.index', [
-            'post' => $post,
-            'user' => $user,
-        ]);
+        $user = User::find($post->user_id);
+        $post->formatted_price = number_format($post->price, 2, ',', '.');
+        $post->formatted_start_date = \Carbon\Carbon::parse($post->start_date)->format('j F Y');
+        $post->formatted_end_date = \Carbon\Carbon::parse($post->end_date)->format('j F Y');
+
+        return view('petProfile.index', compact('post', 'user'));
     }
 }

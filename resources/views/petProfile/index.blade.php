@@ -15,9 +15,7 @@
                         <div class="flex flex-col items-center">
                                 <h2 class=" dark:text-white text-gray-900 text-2xl font-semibold">date</h2>
                                 <p class="dark:text-white text-gray-900">
-                                        {{ \Carbon\Carbon::parse($post->start_date)->format('j F Y') }}
-                                        &middot;
-                                        {{ \Carbon\Carbon::parse($post->end_date)->format('j F Y') }}
+                                        {{ $post->formatted_start_date }} &middot; {{ $post->formatted_end_date }}
                                 </p>
                         </div>
                 </div>
@@ -25,7 +23,7 @@
                         <h2 class="text-center mb-4 dark:text-white text-gray-900 text-2xl font-semibold">images and videos of {{$post->pet_name}}</h2>
                         <div class="flex gap-8 justify-center flex-wrap">
                                 <img class="h-56 w-92" src="{{asset('storage/images/' . $post->image)}}" alt="">
-                                @if($post->video !== NULL) {
+                                @if($post->video) {
                                         <video class="h-56 w-auto" controls src="{{ asset('storage/videos/' . $post->video)}}"></video>
                                 }
                                 @endif
