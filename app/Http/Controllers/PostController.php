@@ -139,7 +139,6 @@ class PostController extends Controller
             $updateData['image'] = $name;
         }
         
-        
         $post->update($updateData);
         
         return redirect(route('posts.index'));

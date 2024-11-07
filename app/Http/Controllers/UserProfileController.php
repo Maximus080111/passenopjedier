@@ -19,7 +19,6 @@ class UserProfileController extends Controller
         return view('userProfile.index', [
             'user' => $Puser,
             'images' => $Puser_img,
-            'posts' => Post::all(),
             'petInfo' => $pets,
         ]);
     }
