@@ -13,7 +13,7 @@ class UserProfileController extends Controller
 {
     public function index(User $user) : View
     {
-        $Puser = User::where('id', $user->id)->first();
+        $Puser = User::findOrFail($user->id);
         $Puser_img = userProfile::where('user_id', $user->id)->get();
         $pets = Post::where('user_id', $user->id)->get();
         return view('userProfile.index', [
@@ -26,32 +26,28 @@ class UserProfileController extends Controller
 
     public function upload(User $user, Request $request)
     {
-        $name = null;
-        $video_name = null;
-
-        $request->validate([
-            'image_user' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'video_user' => 'mimes:mp4,mov,avi|max:102400'
+        $validated = $request->validate([
+            'image_user' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048|nullable',
+            'video_user' => 'mimes:mp4,mov,avi|max:102400|nullable'
         ]);
-
-        if($request->hasFile('video_user')){
-            $video = $request->file('video_user');
-            $video_name = time().'.'.$video->extension();
-            $video->storeAs('public/videos_users', $video_name);
+    
+        $image_name = $request->hasFile('image_user') ? time().'.'.$request->file('image_user')->extension() : null;
+        $video_name = $request->hasFile('video_user') ? time().'.'.$request->file('video_user')->extension() : null;
+    
+        if ($image_name) {
+            $request->file('image_user')->storeAs('public/images_users', $image_name);
         }
-        
-        if($request->hasFile('image_user')){
-            $image = $request->file('image_user');
-            $name = time().'.'.$image->extension();
-            $image->storeAs('public/images_users', $name);
+    
+        if ($video_name) {
+            $request->file('video_user')->storeAs('public/videos_users', $video_name);
         }
-        
+    
         userProfile::create([
             'user_id' => $user->id,
-            'image_user' => $name,
+            'image_user' => $image_name,
             'video_user' => $video_name,
         ]);
-        
+    
         return redirect(route('userProfile.index', $user));
     }
 }

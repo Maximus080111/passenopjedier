@@ -22,8 +22,6 @@ class AanvraagController extends Controller
         $aanvraag->accepted = 1;
         $aanvraag->save();      
 
-        // $aanvragen = Aanvraag::where('post_id' == $aanvraag->post_id);  
-
         $post->is_review = 1;
         $post->save();
 

@@ -17,21 +17,13 @@ class UserController extends Controller
     }
 
     public function block(User $user) {
-        if($user->is_blocked == 1) {
-            $user->is_blocked = 0;
-        } else {
-            $user->is_blocked = 1;
-        }
+        $user->is_blocked = $user->is_blocked ? 0 : 1;
         $user->save();
         return redirect(route('admin.index'));
     }
 
     public function admin(User $user) {
-        if($user->is_admin == 1) {
-            $user->is_admin = 0;
-        } else {
-            $user->is_admin = 1;
-        }
+        $user->is_admin = $user->is_admin ? 0 : 1;
         $user->save();
         return redirect(route('admin.index'));
     }
